@@ -1,0 +1,59 @@
+/* Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+#app {
+  font-family: "Poppins", sans-serif;
+}
+
+p {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+
+h2 {
+  white-space: pre-wrap;
+}
+
+.task-container {
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  margin-bottom: 0.5rem;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 4px 4px 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+.icons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.d-column {
+  flex-direction: column;
+}
+
+.small-font {
+  color: #8f8f8f;
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.middle-font {
+  color: #5e5e5e;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.large-font {
+  color: #5e5e5e;
+  font-size: 1.2rem;
+  text-align: left;
+}
