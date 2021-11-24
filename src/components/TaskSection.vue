@@ -6,45 +6,70 @@
       :key="task.id"
       :sectionName="sectionName"
       :task="task"
+      @inputTitle="handleInputTitle"
+      @inputMemo="handleInputMemo"
     />
-    <add-new-task-btn
-      @update-task-array="updateTaskArray"
-      :sectionId="this.sectionId"
-      :taskList="this.taskList"
+    <task-new
+      :sectionName="sectionName"
+      :newTask="lastTask"
+      @inputNewTitle="handleInputNewTitle"
+      @inputNewMemo="handleInputNewMemo"
     />
+    <div class="btn-container">
+      <button @click="handleAddNewTaskBtn">
+        <v-icon color="gray darken-4" large>mdi-plus</v-icon>
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import SectionName from "./UI/SectionName.vue";
 import TaskCard from "./TaskCard.vue";
-// import TaskNew from "./TaskNew.vue";
-import AddNewTaskBtn from "./UI/AddNewTaskBtn.vue";
-import { TaskList } from "../model";
+import TaskNew from "./TaskNew.vue";
+import { Section } from "../model";
 
 export default {
   props: {
-    sectionId: Number,
+    section: Section,
   },
-  components: { SectionName, TaskCard, AddNewTaskBtn },
+  components: { SectionName, TaskCard, TaskNew },
   data() {
     return {
       sectionName: "",
-      taskList: new TaskList(this.sectionId),
       taskArray: [],
+      lastTask: this.setNewTask(),
     };
   },
-  computed: {
-    getTaskArray() {
-      return this.taskList.createTaskArray();
-    },
-    getNewTask() {
-      return this.taskList.createNewTask(this.sectionId);
-    },
-  },
   methods: {
-    updateTaskArray() {
-      this.taskArray = this.taskList.createTaskArray();
+    setNewTask() {
+      return this.section.taskList.createNewTask(this.section.id);
+    },
+    handleAddNewTaskBtn() {
+      this.taskArray = this.section.taskList.createTaskArray();
+      this.lastTask = this.setNewTask();
+      console.log(this.section.taskList);
+      console.log(this.lastTask);
+    },
+    handleInputTitle(...args) {
+      let iterator = this.section.taskList.head;
+      while (iterator.id !== args[1]) {
+        iterator = iterator.next;
+      }
+      iterator.title = args[0];
+    },
+    handleInputMemo(...args) {
+      let iterator = this.section.taskList.head;
+      while (iterator.id !== args[1]) {
+        iterator = iterator.next;
+      }
+      iterator.memo = args[0];
+    },
+    handleInputNewTitle(event) {
+      this.section.taskList.getLastTask().title = event;
+    },
+    handleInputNewMemo(event) {
+      this.section.taskList.getLastTask().memo = event;
     },
   },
 };
@@ -59,5 +84,12 @@ export default {
   border-radius: 15px;
   backdrop-filter: blur(20px);
   box-shadow: 4px 4px 13px 5px rgba(0, 0, 0, 0.25);
+}
+
+.btn-container {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.7rem;
+  filter: drop-shadow(4px 4px 4px #291515);
 }
 </style>

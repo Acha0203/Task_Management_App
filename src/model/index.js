@@ -29,10 +29,12 @@ export class SectionList {
   static head = new Section(0, "dammy", null);
 
   static createSection() {
+    let newSectionId = this.getLastSection().id + 1;
+
     this.getLastSection().next = new Section(
-      this.getLastSection().id + 1,
+      newSectionId,
       "",
-      new TaskList(this.getLastSection().id + 1)
+      new TaskList(newSectionId)
     );
   }
 
@@ -60,15 +62,15 @@ export class SectionList {
 }
 
 export class TaskList {
-  constructor(sectionId) {
-    this.head = new Task(0, "dammy", sectionId, "", false, false);
+  constructor(newSectionId) {
+    this.head = new Task(0, "dammy", newSectionId, "", false, false);
   }
 
-  createNewTask(sectionId) {
+  createNewTask(newSectionId) {
     this.getLastTask().next = new Task(
       this.getLastTask().id + 1,
       "",
-      sectionId,
+      newSectionId,
       "",
       false,
       false

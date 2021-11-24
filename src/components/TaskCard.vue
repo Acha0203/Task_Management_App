@@ -1,7 +1,8 @@
 <template>
   <div class="task-container">
     <v-text-field
-      @input="handleInputTitle($event)"
+      @input="handleInputTitle"
+      :value="inputData.title"
       color="gray darken-1"
       label="Title"
     />
@@ -13,7 +14,8 @@
       <v-textarea
         outlined
         v-if="textAreaDisplayedFlag"
-        @input="handleInputMemo($event)"
+        @input="handleInputMemo"
+        :value="inputData.memo"
         color="gray darken-4"
         name="task-memo"
         label="Memo"
@@ -21,7 +23,7 @@
       />
       <div v-else class="text-box">
         <h3 class="small-font">Memo:</h3>
-        <h2 class="middle-font">{{ this.task.memo }}</h2>
+        <h2 class="middle-font">{{ this.inputData.memo }}</h2>
       </div>
     </keep-alive>
     <div class="icons-container">
@@ -47,6 +49,10 @@ export default {
   data() {
     return {
       textAreaDisplayedFlag: false,
+      inputData: {
+        title: this.task.title,
+        memo: this.task.memo,
+      },
     };
   },
   components: { CheckBtn, StarBtn, DeleteBtn },
@@ -59,10 +65,12 @@ export default {
       this.textAreaDisplayedFlag = !this.textAreaDisplayedFlag;
     },
     handleInputTitle(event) {
-      this.task.title = event;
+      this.inputData.title = event;
+      this.$emit("inputTitle", event, this.task.id);
     },
     handleInputMemo(event) {
-      this.task.memo = event;
+      this.inputData.memo = event;
+      this.$emit("inputMemo", event, this.task.id);
     },
   },
 };

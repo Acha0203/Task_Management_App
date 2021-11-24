@@ -1,7 +1,8 @@
 <template>
   <div class="task-container">
     <v-text-field
-      @input="handleInputTitle($event)"
+      @input="$emit('inputNewTitle', $event)"
+      :value="newTask.title"
       color="gray darken-1"
       label="Title"
     />
@@ -13,7 +14,8 @@
       <v-textarea
         outlined
         v-if="textAreaDisplayedFlag"
-        @input="handleInputMemo($event)"
+        @input="$emit('inputNewMemo', $event)"
+        :value="newTask.memo"
         color="gray darken-4"
         name="task-memo"
         label="Memo"
@@ -21,7 +23,7 @@
       />
       <div v-else class="text-box">
         <h3 class="small-font">Memo:</h3>
-        <h2 class="middle-font">{{ this.newTask.memo }}</h2>
+        <h2 class="middle-font">{{ newTask.memo }}</h2>
       </div>
     </keep-alive>
     <div class="icons-container">
@@ -57,12 +59,6 @@ export default {
   methods: {
     switchTextArea() {
       this.textAreaDisplayedFlag = !this.textAreaDisplayedFlag;
-    },
-    handleInputTitle(event) {
-      this.newTask.title = event;
-    },
-    handleInputMemo(event) {
-      this.newTask.memo = event;
     },
   },
 };

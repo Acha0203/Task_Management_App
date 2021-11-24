@@ -4,7 +4,7 @@
       <task-section
         v-for="section in sectionArray"
         :key="section.id"
-        :sectionId="section.id"
+        :section="section"
       />
       <add-section-btn @create-new-section="createNewSection" />
     </div>
@@ -43,7 +43,7 @@ export default {
   align-items: flex-start;
   padding: 0.7rem;
   background-color: #000000;
-  background-image: url("./assets/images/cosmos-flowers-g223ac18b0_1920.jpg");
+  background-image: url("./assets/images/orbs-ge1b8bbe9b_1920.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
