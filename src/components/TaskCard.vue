@@ -83,7 +83,7 @@ export default {
     },
     deleteTask() {
       this.taskList.deleteTask(this.task.id);
-      this.$emit("updateTaskArray");
+      this.$emit("update-task-array");
     },
   },
 };

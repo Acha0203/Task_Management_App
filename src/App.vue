@@ -5,6 +5,8 @@
         v-for="section in sectionArray"
         :key="section.id"
         :section="section"
+        :sectionList="sectionListHead"
+        @delete-section="deleteSection"
       />
       <add-section-btn @create-new-section="createNewSection" />
     </div>
@@ -28,6 +30,10 @@ export default {
   methods: {
     createNewSection() {
       SectionList.createSection();
+      this.sectionArray = SectionList.createSectionArray();
+    },
+    deleteSection(sectionId) {
+      SectionList.deleteSection(sectionId);
       this.sectionArray = SectionList.createSectionArray();
     },
   },

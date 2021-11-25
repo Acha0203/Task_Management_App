@@ -7,14 +7,6 @@ export class Task {
     this.doneFlag = doneFlag;
     this.starFlag = starFlag;
   }
-
-  // getSectionName(sectionList) {
-  //   for (let i = 0; i < sectionList.length; i++) {
-  //     if (sectionList[i].id === this.id) {
-  //       return sectionList[i].sectionName;
-  //     }
-  //   }
-  // }
 }
 
 export class Section {
@@ -58,6 +50,19 @@ export class SectionList {
     }
 
     return sectionArray;
+  }
+
+  static deleteSection(id) {
+    let iterator = this.head;
+    let preSection = null;
+
+    while (iterator.id !== id) {
+      preSection = iterator;
+      iterator = iterator.next;
+    }
+
+    preSection.next = iterator.next;
+    return this.head;
   }
 }
 

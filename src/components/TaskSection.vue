@@ -7,13 +7,16 @@
       :sectionName="sectionName"
       :task="task"
       :taskList="section.taskList"
-      @updateTaskArray="updateTaskArray"
+      @update-task-array="updateTaskArray"
       @inputTitle="handleInputTitle"
       @inputMemo="handleInputMemo"
     />
     <div class="btn-container">
       <button @click="createNewTask">
-        <v-icon color="grey darken-3" large>mdi-plus</v-icon>
+        <v-icon color="grey darken-2" large>mdi-plus</v-icon>
+      </button>
+      <button @click="handleDeleteBtn">
+        <v-icon color="grey darken-2" large>mdi-delete</v-icon>
       </button>
     </div>
   </div>
@@ -27,6 +30,7 @@ import { Section } from "../model";
 export default {
   props: {
     section: Section,
+    sectionList: Section,
   },
   components: { SectionName, TaskCard },
   data() {
@@ -61,13 +65,16 @@ export default {
       }
       iterator.memo = args[0];
     },
+    handleDeleteBtn() {
+      this.$emit("delete-section", this.section.id);
+    },
   },
 };
 </script>
 
 <style scoped>
 .container {
-  width: 90vw;
+  width: 270px;
   text-align: center;
   padding: 1rem;
   margin: 1rem;
@@ -78,8 +85,7 @@ export default {
 
 .btn-container {
   display: flex;
-  align-items: flex-start;
+  justify-content: space-between;
   padding-top: 0.7rem;
-  filter: drop-shadow(4px 4px 4px #291515);
 }
 </style>
