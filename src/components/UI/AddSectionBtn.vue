@@ -2,7 +2,7 @@
   <div class="btn-container">
     <v-btn
       @click="$emit('create-new-section')"
-      color="gray darken-4"
+      color="grey darken-3"
       elevation="5"
       rounded
       Large

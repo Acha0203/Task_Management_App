@@ -1,9 +1,9 @@
 <template>
   <div class="task-container">
     <v-text-field
-      @input="$emit('inputTitle', event, this.task.id)"
+      @input="$emit('inputTitle', $event, task.id)"
       :value="task.title"
-      color="gray darken-1"
+      color="grey darken-1"
       label="Title"
     />
     <div>
@@ -14,9 +14,9 @@
       <v-textarea
         outlined
         v-if="textAreaDisplayedFlag"
-        @input="$emit('inputMemo', event, this.task.id)"
+        @input="$emit('inputMemo', $event, task.id)"
         :value="task.memo"
-        color="gray darken-4"
+        color="grey darken-3"
         name="task-memo"
         label="Memo"
         class="text-area"
@@ -34,7 +34,11 @@
       </div>
       <check-btn />
       <star-btn />
-      <delete-btn />
+      <div class="btn-container">
+        <button @click="deleteTask">
+          <v-icon>mdi-delete</v-icon>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -42,8 +46,7 @@
 <script>
 import CheckBtn from "./UI/CheckBtn.vue";
 import StarBtn from "./UI/StarBtn.vue";
-import DeleteBtn from "./UI/DeleteBtn.vue";
-import { Task } from "../model";
+import { Task, TaskList } from "../model";
 
 export default {
   data() {
@@ -51,20 +54,19 @@ export default {
       textAreaDisplayedFlag: false,
     };
   },
-  components: { CheckBtn, StarBtn, DeleteBtn },
+  components: { CheckBtn, StarBtn },
   props: {
     sectionName: String,
     task: Task,
+    taskList: TaskList,
   },
   methods: {
     switchTextArea() {
       this.textAreaDisplayedFlag = !this.textAreaDisplayedFlag;
     },
-    handleInputTitle(event) {
-      this.$emit("inputTitle", event, this.task.id);
-    },
-    handleInputMemo(event) {
-      this.$emit("inputMemo", event, this.task.id);
+    deleteTask() {
+      this.taskList.deleteTask(this.task.id);
+      this.$emit("updateTaskArray");
     },
   },
 };

@@ -2,7 +2,7 @@
   <v-text-field
     :value="value"
     @input="$emit('input', $event)"
-    color="gray darken-4"
+    color="grey darken-3"
     label="Section Name"
   />
 </template>

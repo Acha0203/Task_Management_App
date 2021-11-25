@@ -3,7 +3,7 @@
     <v-text-field
       @input="$emit('inputNewTitle', $event)"
       :value="newTask.title"
-      color="gray darken-1"
+      color="grey darken-1"
       label="Title"
     />
     <div>
@@ -16,7 +16,7 @@
         v-if="textAreaDisplayedFlag"
         @input="$emit('inputNewMemo', $event)"
         :value="newTask.memo"
-        color="gray darken-4"
+        color="grey darken-3"
         name="task-memo"
         label="Memo"
         class="text-area"
@@ -34,7 +34,9 @@
       </div>
       <check-btn />
       <star-btn />
-      <delete-btn />
+      <div class="btn-container">
+        <v-icon color="grey lighten-1">mdi-delete</v-icon>
+      </div>
     </div>
   </div>
 </template>
@@ -42,7 +44,6 @@
 <script>
 import CheckBtn from "./UI/CheckBtn.vue";
 import StarBtn from "./UI/StarBtn.vue";
-import DeleteBtn from "./UI/DeleteBtn.vue";
 import { Task } from "../model";
 
 export default {
@@ -51,7 +52,7 @@ export default {
       textAreaDisplayedFlag: false,
     };
   },
-  components: { CheckBtn, StarBtn, DeleteBtn },
+  components: { CheckBtn, StarBtn },
   props: {
     sectionName: String,
     newTask: Task,

@@ -6,18 +6,14 @@
       :key="task.id"
       :sectionName="sectionName"
       :task="task"
+      :taskList="section.taskList"
+      @updateTaskArray="updateTaskArray"
       @inputTitle="handleInputTitle"
       @inputMemo="handleInputMemo"
     />
-    <task-new
-      :sectionName="sectionName"
-      :newTask="lastTask"
-      @inputNewTitle="handleInputNewTitle"
-      @inputNewMemo="handleInputNewMemo"
-    />
     <div class="btn-container">
-      <button @click="handleAddNewTaskBtn">
-        <v-icon color="gray darken-4" large>mdi-plus</v-icon>
+      <button @click="createNewTask">
+        <v-icon color="grey darken-3" large>mdi-plus</v-icon>
       </button>
     </div>
   </div>
@@ -26,30 +22,30 @@
 <script>
 import SectionName from "./UI/SectionName.vue";
 import TaskCard from "./TaskCard.vue";
-import TaskNew from "./TaskNew.vue";
 import { Section } from "../model";
 
 export default {
   props: {
     section: Section,
   },
-  components: { SectionName, TaskCard, TaskNew },
+  components: { SectionName, TaskCard },
   data() {
     return {
       sectionName: "",
-      taskArray: [],
-      lastTask: this.setNewTask(),
+      taskArray: this.initializeTaskArray(),
     };
   },
   methods: {
-    setNewTask() {
-      return this.section.taskList.createNewTask(this.section.id);
+    createNewTask() {
+      this.section.taskList.createNewTask(this.section.id);
+      this.updateTaskArray();
     },
-    handleAddNewTaskBtn() {
+    initializeTaskArray() {
+      this.section.taskList.createNewTask(this.section.id);
+      return this.section.taskList.createTaskArray();
+    },
+    updateTaskArray() {
       this.taskArray = this.section.taskList.createTaskArray();
-      this.lastTask = this.setNewTask();
-      console.log(this.section.taskList);
-      console.log(this.lastTask);
     },
     handleInputTitle(...args) {
       let iterator = this.section.taskList.head;
@@ -65,19 +61,13 @@ export default {
       }
       iterator.memo = args[0];
     },
-    handleInputNewTitle(event) {
-      this.section.taskList.getLastTask().title = event;
-    },
-    handleInputNewMemo(event) {
-      this.section.taskList.getLastTask().memo = event;
-    },
   },
 };
 </script>
 
 <style scoped>
 .container {
-  width: 270px;
+  width: 90vw;
   text-align: center;
   padding: 1rem;
   margin: 1rem;

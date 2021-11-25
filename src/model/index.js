@@ -8,13 +8,13 @@ export class Task {
     this.starFlag = starFlag;
   }
 
-  getSectionName(sectionList) {
-    for (let i = 0; i < sectionList.length; i++) {
-      if (sectionList[i].id === this.id) {
-        return sectionList[i].sectionName;
-      }
-    }
-  }
+  // getSectionName(sectionList) {
+  //   for (let i = 0; i < sectionList.length; i++) {
+  //     if (sectionList[i].id === this.id) {
+  //       return sectionList[i].sectionName;
+  //     }
+  //   }
+  // }
 }
 
 export class Section {
@@ -62,15 +62,15 @@ export class SectionList {
 }
 
 export class TaskList {
-  constructor(newSectionId) {
-    this.head = new Task(0, "dammy", newSectionId, "", false, false);
+  constructor(sectionId) {
+    this.head = new Task(0, "dammy", sectionId, "", false, false);
   }
 
-  createNewTask(newSectionId) {
+  createNewTask(sectionId) {
     this.getLastTask().next = new Task(
       this.getLastTask().id + 1,
       "",
-      newSectionId,
+      sectionId,
       "",
       false,
       false
@@ -89,8 +89,8 @@ export class TaskList {
     return iterator;
   }
 
-  deleteTask(id, taskList) {
-    let iterator = taskList.head;
+  deleteTask(id) {
+    let iterator = this.head;
     let preTask = null;
 
     while (iterator.id !== id) {
@@ -99,7 +99,7 @@ export class TaskList {
     }
 
     preTask.next = iterator.next;
-    return taskList;
+    return this.head;
   }
 
   createTaskArray() {
