@@ -114,7 +114,7 @@ export class TaskList {
     return taskArray;
   }
 
-  toggleFlag(id) {
+  toggleDoneFlag(id) {
     let iterator = this.head;
 
     while (iterator.id !== id) {
@@ -122,5 +122,15 @@ export class TaskList {
     }
 
     iterator.doneFlag = iterator.doneFlag ? false : true;
+  }
+
+  toggleStarFlag(id) {
+    let iterator = this.head;
+
+    while (iterator.id !== id) {
+      iterator = iterator.next;
+    }
+
+    iterator.starFlag = iterator.starFlag ? false : true;
   }
 }

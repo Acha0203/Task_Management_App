@@ -13,7 +13,7 @@
     <keep-alive>
       <v-textarea
         outlined
-        v-if="textAreaDisplayedFlag"
+        v-if="isTextAreaOpened"
         @input="$emit('inputMemo', $event, task.id)"
         :value="task.memo"
         color="grey darken-3"
@@ -28,12 +28,22 @@
     </keep-alive>
     <div class="icons-container">
       <div class="btn-container">
-        <button @click="switchTextArea">
+        <button @click="toggleTextArea">
           <v-icon>mdi-note</v-icon>
         </button>
       </div>
-      <check-btn />
-      <star-btn />
+      <div class="btn-container">
+        <button @click="toggleCheckMark">
+          <v-icon v-if="isBlue" color="blue accent-1">mdi-check-bold</v-icon>
+          <v-icon v-else color="grey darken-1">mdi-check-bold</v-icon>
+        </button>
+      </div>
+      <div class="btn-container">
+        <button @click="toggleStarMark">
+          <v-icon v-if="isCyan" color="cyan accent-3">mdi-star</v-icon>
+          <v-icon v-else color="grey darken-1">mdi-star</v-icon>
+        </button>
+      </div>
       <div class="btn-container">
         <button @click="deleteTask">
           <v-icon>mdi-delete</v-icon>
@@ -44,25 +54,32 @@
 </template>
 
 <script>
-import CheckBtn from "./UI/CheckBtn.vue";
-import StarBtn from "./UI/StarBtn.vue";
 import { Task, TaskList } from "../model";
 
 export default {
   data() {
     return {
-      textAreaDisplayedFlag: false,
+      isTextAreaOpened: false,
+      isBlue: false,
+      isCyan: false,
     };
   },
-  components: { CheckBtn, StarBtn },
   props: {
     sectionName: String,
     task: Task,
     taskList: TaskList,
   },
   methods: {
-    switchTextArea() {
-      this.textAreaDisplayedFlag = !this.textAreaDisplayedFlag;
+    toggleTextArea() {
+      this.isTextAreaOpened = !this.isTextAreaOpened;
+    },
+    toggleCheckMark() {
+      this.isBlue = !this.isBlue;
+      this.taskList.toggleDoneFlag(this.task.id);
+    },
+    toggleStarMark() {
+      this.isCyan = !this.isCyan;
+      this.taskList.toggleStarFlag(this.task.id);
     },
     deleteTask() {
       this.taskList.deleteTask(this.task.id);
