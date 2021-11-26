@@ -1,21 +1,23 @@
 <template>
   <div class="container">
     <section-name v-model="sectionName" />
-    <task-card
-      v-for="task in taskArray"
-      :key="task.id"
-      :sectionName="sectionName"
-      :task="task"
-      :taskList="section.taskList"
-      @update-task-array="updateTaskArray"
-      @inputTitle="handleInputTitle"
-      @inputMemo="handleInputMemo"
-    />
+    <draggable group="myGroup" :options="options" @end="onEnd">
+      <task-card
+        v-for="task in taskArray"
+        :key="task.id"
+        :sectionName="sectionName"
+        :task="task"
+        :taskList="section.taskList"
+        @update-task-array="updateTaskArray"
+        @inputTitle="inputTitle"
+        @inputMemo="inputMemo"
+      />
+    </draggable>
     <div class="btn-container">
       <button @click="createNewTask">
         <v-icon color="grey darken-2" large>mdi-plus</v-icon>
       </button>
-      <button @click="handleDeleteBtn">
+      <button @click="deleteSection">
         <v-icon color="grey darken-2" large>mdi-delete</v-icon>
       </button>
     </div>
@@ -26,15 +28,20 @@
 import SectionName from "./UI/SectionName.vue";
 import TaskCard from "./TaskCard.vue";
 import { Section } from "../model";
+import draggable from "vuedraggable";
 
 export default {
   props: {
     section: Section,
     sectionList: Section,
   },
-  components: { SectionName, TaskCard },
+  components: { SectionName, TaskCard, draggable },
   data() {
     return {
+      options: {
+        group: "myGroup",
+        animation: 200, // Vue.Draggableのアニメーションの設定
+      },
       sectionName: "",
       taskArray: this.initializeTaskArray(),
     };
@@ -51,22 +58,26 @@ export default {
     updateTaskArray() {
       this.taskArray = this.section.taskList.createTaskArray();
     },
-    handleInputTitle(...args) {
+    inputTitle(...args) {
       let iterator = this.section.taskList.head;
       while (iterator.id !== args[1]) {
         iterator = iterator.next;
       }
       iterator.title = args[0];
     },
-    handleInputMemo(...args) {
+    inputMemo(...args) {
       let iterator = this.section.taskList.head;
       while (iterator.id !== args[1]) {
         iterator = iterator.next;
       }
       iterator.memo = args[0];
     },
-    handleDeleteBtn() {
+    deleteSection() {
       this.$emit("delete-section", this.section.id);
+    },
+    onEnd(event) {
+      console.log(event);
+      console.log(this.taskArray);
     },
   },
 };
