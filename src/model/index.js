@@ -10,132 +10,103 @@ export class Task {
 }
 
 export class Section {
-  constructor(id, sectionName, taskList) {
+  constructor(id, sectionName, taskArray) {
     this.id = id;
     this.sectionName = sectionName;
-    this.taskList = taskList;
+    this.taskArray = taskArray;
   }
 }
 
-export class SectionList {
-  static head = new Section(0, "dammy", null);
+export class SectionArray {
+  static createNewSection(sectionArray) {
+    let largestId = -1;
+    for (let i = 0; i < sectionArray.length; i++) {
+      if (sectionArray[i].id > largestId) largestId = sectionArray[i].id;
+    }
 
-  static createSection() {
-    let newSectionId = this.getLastSection().id + 1;
-
-    this.getLastSection().next = new Section(
-      newSectionId,
-      "",
-      new TaskList(newSectionId)
+    sectionArray.push(
+      new Section(
+        largestId + 1,
+        "",
+        TaskArray.createNewTaskArray(largestId + 1)
+      )
     );
-  }
-
-  static getLastSection() {
-    let iterator = this.head;
-
-    while (iterator.next !== undefined) {
-      iterator = iterator.next;
-    }
-
-    return iterator;
-  }
-
-  static createSectionArray() {
-    let sectionArray = [];
-    let iterator = this.head.next;
-
-    while (iterator !== undefined) {
-      sectionArray.push(iterator);
-      iterator = iterator.next;
-    }
 
     return sectionArray;
   }
 
-  static deleteSection(id) {
-    let iterator = this.head;
-    let preSection = null;
+  static deleteSection(sectionArray, id) {
+    sectionArray.splice(id, 1);
 
-    while (iterator.id !== id) {
-      preSection = iterator;
-      iterator = iterator.next;
-    }
-
-    preSection.next = iterator.next;
-    return this.head;
+    return sectionArray;
   }
 }
 
-export class TaskList {
-  constructor(sectionId) {
-    this.head = new Task(0, "dammy", sectionId, "", false, false);
+export class TaskArray {
+  static createNewTaskArray(sectionId) {
+    let newTaskArray = [];
+    newTaskArray.push(new Task(0, "", sectionId, "", false, false));
+
+    return newTaskArray;
   }
 
-  createNewTask(sectionId) {
-    this.getLastTask().next = new Task(
-      this.getLastTask().id + 1,
-      "",
-      sectionId,
-      "",
-      false,
-      false
-    );
-
-    return this.getLastTask();
-  }
-
-  getLastTask() {
-    let iterator = this.head;
-
-    while (iterator.next !== undefined) {
-      iterator = iterator.next;
+  static createNewTask(taskArray, sectionId) {
+    let largestId = 0;
+    for (let i = 0; i < taskArray.length; i++) {
+      if (taskArray[i].id > largestId) largestId = taskArray[i].id;
     }
 
-    return iterator;
+    taskArray.push(new Task(largestId + 1, "", sectionId, "", false, false));
+
+    return taskArray;
   }
 
-  deleteTask(id) {
-    let iterator = this.head;
-    let preTask = null;
-
-    while (iterator.id !== id) {
-      preTask = iterator;
-      iterator = iterator.next;
-    }
-
-    preTask.next = iterator.next;
-    return this.head;
+  static deleteTask(taskArray, id) {
+    taskArray.splice(id, 1);
+    return taskArray;
   }
 
-  createTaskArray() {
-    let taskArray = [];
-    let iterator = this.head.next;
-
-    while (iterator !== undefined) {
-      taskArray.push(iterator);
-      iterator = iterator.next;
+  static toggleDoneFlag(taskArray, id) {
+    for (let i = 0; i < taskArray.length; i++) {
+      if (taskArray[i].id === id) {
+        taskArray[i].doneFlag = taskArray[i].doneFlag ? false : true;
+        break;
+      }
     }
 
     return taskArray;
   }
 
-  toggleDoneFlag(id) {
-    let iterator = this.head;
-
-    while (iterator.id !== id) {
-      iterator = iterator.next;
+  static toggleStarFlag(taskArray, id) {
+    for (let i = 0; i < taskArray.length; i++) {
+      if (taskArray[i].id === id) {
+        taskArray[i].starFlag = taskArray[i].starFlag ? false : true;
+        break;
+      }
     }
 
-    iterator.doneFlag = iterator.doneFlag ? false : true;
+    return taskArray;
   }
 
-  toggleStarFlag(id) {
-    let iterator = this.head;
-
-    while (iterator.id !== id) {
-      iterator = iterator.next;
+  static inputTitle(taskArray, id, title) {
+    for (let i = 0; i < taskArray.length; i++) {
+      if (taskArray[i].id === id) {
+        taskArray[i].title = title;
+        break;
+      }
     }
 
-    iterator.starFlag = iterator.starFlag ? false : true;
+    return taskArray;
+  }
+
+  static inputMemo(taskArray, id, memo) {
+    for (let i = 0; i < taskArray.length; i++) {
+      if (taskArray[i].id === id) {
+        taskArray[i].memo = memo;
+        break;
+      }
+    }
+
+    return taskArray;
   }
 }

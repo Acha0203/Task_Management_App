@@ -5,7 +5,6 @@
         v-for="section in sectionArray"
         :key="section.id"
         :section="section"
-        :sectionList="sectionListHead"
         @delete-section="deleteSection"
       />
       <add-section-btn @create-new-section="createNewSection" />
@@ -16,25 +15,25 @@
 <script>
 import AddSectionBtn from "./components/UI/AddSectionBtn.vue";
 import TaskSection from "./components/TaskSection.vue";
-import { SectionList } from "./model/index.js";
+import { SectionArray } from "./model/index.js";
 
 export default {
   name: "App",
   components: { AddSectionBtn, TaskSection },
   data() {
     return {
-      sectionListHead: SectionList.head,
       sectionArray: [],
     };
   },
   methods: {
     createNewSection() {
-      SectionList.createSection();
-      this.sectionArray = SectionList.createSectionArray();
+      this.sectionArray = SectionArray.createNewSection(this.sectionArray);
     },
     deleteSection(sectionId) {
-      SectionList.deleteSection(sectionId);
-      this.sectionArray = SectionList.createSectionArray();
+      this.sectionArray = SectionArray.deleteSection(
+        this.sectionArray,
+        sectionId
+      );
     },
   },
 };

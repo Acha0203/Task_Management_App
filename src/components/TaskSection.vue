@@ -1,16 +1,17 @@
 <template>
   <div class="container">
     <section-name v-model="sectionName" />
-    <draggable group="myGroup" :options="options" @end="onEnd">
+    <draggable v-model="taskArray" draggable=".task-card" group="tasks">
       <task-card
         v-for="task in taskArray"
         :key="task.id"
         :sectionName="sectionName"
         :task="task"
-        :taskList="section.taskList"
-        @update-task-array="updateTaskArray"
+        :taskArray="taskArray"
+        @delete-task="deleteTask"
         @inputTitle="inputTitle"
         @inputMemo="inputMemo"
+        class="task-card"
       />
     </draggable>
     <div class="btn-container">
@@ -27,13 +28,12 @@
 <script>
 import SectionName from "./UI/SectionName.vue";
 import TaskCard from "./TaskCard.vue";
-import { Section } from "../model";
+import { Section, TaskArray } from "../model";
 import draggable from "vuedraggable";
 
 export default {
   props: {
     section: Section,
-    sectionList: Section,
   },
   components: { SectionName, TaskCard, draggable },
   data() {
@@ -47,37 +47,23 @@ export default {
     };
   },
   methods: {
-    createNewTask() {
-      this.section.taskList.createNewTask(this.section.id);
-      this.updateTaskArray();
-    },
     initializeTaskArray() {
-      this.section.taskList.createNewTask(this.section.id);
-      return this.section.taskList.createTaskArray();
+      return TaskArray.createNewTaskArray(this.section.id);
     },
-    updateTaskArray() {
-      this.taskArray = this.section.taskList.createTaskArray();
+    createNewTask() {
+      this.taskArray = TaskArray.createNewTask(this.taskArray, this.section.id);
+    },
+    deleteTask(id) {
+      this.taskArray = TaskArray.deleteTask(this.taskArray, id);
     },
     inputTitle(...args) {
-      let iterator = this.section.taskList.head;
-      while (iterator.id !== args[1]) {
-        iterator = iterator.next;
-      }
-      iterator.title = args[0];
+      this.taskArray = TaskArray.inputTitle(this.taskArray, args[1], args[0]);
     },
     inputMemo(...args) {
-      let iterator = this.section.taskList.head;
-      while (iterator.id !== args[1]) {
-        iterator = iterator.next;
-      }
-      iterator.memo = args[0];
+      this.taskArray = TaskArray.inputMemo(this.taskArray, args[1], args[0]);
     },
     deleteSection() {
       this.$emit("delete-section", this.section.id);
-    },
-    onEnd(event) {
-      console.log(event);
-      console.log(this.taskArray);
     },
   },
 };

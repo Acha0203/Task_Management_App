@@ -34,13 +34,15 @@
       </div>
       <div class="btn-container">
         <button @click="toggleCheckMark">
-          <v-icon v-if="isBlue" color="blue accent-1">mdi-check-bold</v-icon>
+          <v-icon v-if="task.doneFlag" color="blue accent-1"
+            >mdi-check-bold</v-icon
+          >
           <v-icon v-else color="grey darken-1">mdi-check-bold</v-icon>
         </button>
       </div>
       <div class="btn-container">
         <button @click="toggleStarMark">
-          <v-icon v-if="isCyan" color="cyan accent-3">mdi-star</v-icon>
+          <v-icon v-if="task.starFlag" color="cyan accent-3">mdi-star</v-icon>
           <v-icon v-else color="grey darken-1">mdi-star</v-icon>
         </button>
       </div>
@@ -54,20 +56,18 @@
 </template>
 
 <script>
-import { Task, TaskList } from "../model";
+import { Task, TaskArray } from "../model";
 
 export default {
   data() {
     return {
       isTextAreaOpened: false,
-      isBlue: false,
-      isCyan: false,
     };
   },
   props: {
     sectionName: String,
     task: Task,
-    taskList: TaskList,
+    taskArray: Array,
   },
   methods: {
     toggleTextArea() {
@@ -75,15 +75,14 @@ export default {
     },
     toggleCheckMark() {
       this.isBlue = !this.isBlue;
-      this.taskList.toggleDoneFlag(this.task.id);
+      TaskArray.toggleDoneFlag(this.taskArray, this.task.id);
     },
     toggleStarMark() {
       this.isCyan = !this.isCyan;
-      this.taskList.toggleStarFlag(this.task.id);
+      TaskArray.toggleStarFlag(this.taskArray, this.task.id);
     },
     deleteTask() {
-      this.taskList.deleteTask(this.task.id);
-      this.$emit("update-task-array");
+      this.$emit("delete-task", this.task.id);
     },
   },
 };
