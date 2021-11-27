@@ -60,7 +60,6 @@ export default {
     },
     deleteTask(id) {
       this.taskArray = TaskArray.deleteTask(this.taskArray, id);
-      console.log(this.taskArray);
     },
     inputTitle(...args) {
       this.taskArray = TaskArray.inputTitle(this.taskArray, args[1], args[0]);
@@ -72,13 +71,11 @@ export default {
       this.$emit("delete-section", this.section.id);
     },
     updateTaskIds() {
-      console.log(this.taskArray);
       this.taskArray = Utility.updateIds(this.taskArray);
       this.taskArray = TaskArray.updateSectionIds(
         this.taskArray,
         this.section.id
       );
-      console.log(this.taskArray);
     },
   },
 };
