@@ -37,6 +37,7 @@ export class SectionArray {
 
   static deleteSection(sectionArray, id) {
     sectionArray.splice(id, 1);
+    sectionArray = Utility.updateIds(sectionArray);
 
     return sectionArray;
   }
@@ -63,6 +64,16 @@ export class TaskArray {
 
   static deleteTask(taskArray, id) {
     taskArray.splice(id, 1);
+    taskArray = Utility.updateIds(taskArray);
+
+    return taskArray;
+  }
+
+  static updateSectionIds(taskArray, sectionId) {
+    for (let i = 0; i < taskArray.length; i++) {
+      taskArray[i].sectionId = sectionId;
+    }
+
     return taskArray;
   }
 
@@ -108,5 +119,15 @@ export class TaskArray {
     }
 
     return taskArray;
+  }
+}
+
+export class Utility {
+  static updateIds(array) {
+    for (let i = 0; i < array.length; i++) {
+      array[i].id = i;
+    }
+
+    return array;
   }
 }
